@@ -79,8 +79,11 @@ def generate_reply_HF(history, tokenizer, model, embeddings, params, stopping_st
     # embeddings = params['embeddings']
 
     # might have to change this - make sure the history['You'][-1] part is accurate (list or dict etc)
+    start_time = time.time()
     memory = custom_generate_chat_prompt(history['You'][-1], embeddings, history, params['character'],
         params['chunk_count', 'chunk_count_initial', 'time_weight'])
+    print("Time to pull memory")
+    print("--- %s seconds ---" % (time.time() - start_time))
 
     # add newline to persona ending if not already there
     if persona[-1]!= "\n": persona=persona+"\n"
