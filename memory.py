@@ -10,7 +10,8 @@ def build_collection(history, character):
 	
 	start_time = time.time()
 
-	chroma_client = chromadb.Client(Settings(anonymized_telemetry=False))
+	chroma_client = chromadb.Client(Settings(anonymized_telemetry=False, persist_directory="/embeddings/"))
+
 	sentence_transformer_ef = embedding_functions.SentenceTransformerEmbeddingFunction(model_name="all-mpnet-base-v2")
 	collection = chroma_client.create_collection(name="context", embedding_function=sentence_transformer_ef)
 
@@ -33,16 +34,11 @@ def custom_generate_chat_prompt(user_input, collection, history, character, para
 
 		query = user_input
 
-		collection_creation_time = time.time()
-		print("--- %s seconds ---" % (collection_creation_time - start_time))
-
 		best_ids = get_ids_sorted(ids, collection, query, n_results=params['chunk_count'], n_initial=params['chunk_count_initial'], time_weight=params['time_weight'])
 		additional_context = '\n'
 
 		for id_ in best_ids:
 			additional_context += make_single_exchange(id_, history, character)
-
-		print("--- %s seconds ---" % (time.time() - collection_creation_time))
 
 		return additional_context
 

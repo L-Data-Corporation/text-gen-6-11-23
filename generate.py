@@ -88,11 +88,6 @@ def generate_reply_HF(history, tokenizer, model, embeddings, params, stopping_st
     # add newline to persona ending if not already there
     if persona[-1]!= "\n": persona=persona+"\n"
 
-    ## Split prompt into persona and context
-    # split_point = history.find("<START>\n")+len("<START>\n")
-    # persona = history[:split_point]
-    # context = 1000*'random '+history[split_point:]
-
     print("-------------------- Persona and memory --------------------")
     print(persona+memory)
     print("-------------------- History --------------------")
