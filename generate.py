@@ -70,7 +70,7 @@ class _SentinelTokenStoppingCriteria(StoppingCriteria):
         return False
 
 
-def generate_reply_HF(history, tokenizer, model, embeddings, params, stopping_strings=None):
+def generate_reply_HF(user_input, history, tokenizer, model, params, stopping_strings=None):
     generate_params = {}
     for k in ['max_new_tokens', 'do_sample', 'temperature', 'top_p', 'repetition_penalty', 'top_k']:
         generate_params[k] = params[k]
@@ -80,8 +80,7 @@ def generate_reply_HF(history, tokenizer, model, embeddings, params, stopping_st
 
     # might have to change this - make sure the history['You'][-1] part is accurate (list or dict etc)
     start_time = time.time()
-    memory = custom_generate_chat_prompt(history['You'][-1], embeddings, history, params['character'],
-        params['chunk_count', 'chunk_count_initial', 'time_weight'])
+    memory = custom_generate_chat_prompt(user_input, history, params['character','chunk_count','chunk_count_initial','time_weight'])
     print("Time to pull memory")
     print("--- %s seconds ---" % (time.time() - start_time))
 

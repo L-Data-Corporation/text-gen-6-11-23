@@ -10,10 +10,10 @@ def build_collection(history, character):
 	
 	start_time = time.time()
 
-	chroma_client = chromadb.Client(Settings(anonymized_telemetry=False, chroma_db_impl="duckdb+parquet", persist_directory=f"embeddings/{character}"))
+	chroma_client = chromadb.Client(Settings(chroma_db_impl="duckdb+parquet", persist_directory=f"embeddings"))
 
 	sentence_transformer_ef = embedding_functions.SentenceTransformerEmbeddingFunction(model_name="all-mpnet-base-v2")
-	collection = chroma_client.create_collection(name="context", embedding_function=sentence_transformer_ef)
+	collection = chroma_client.get_or_create_collection(name=f"{character}", embedding_function=sentence_transformer_ef)
 
 	chunks = []
 	hist_size = len(history['You'])
@@ -31,7 +31,11 @@ def build_collection(history, character):
 	return collection
 
 
-def custom_generate_chat_prompt(user_input, collection, history, character, params):
+def custom_generate_chat_prompt(user_input, history, params):
+	character = params['character']
+	chroma_client = chromadb.Client(Settings(chroma_db_impl="duckdb+parquet", persist_directory=f"embeddings"))
+	collection = client.get_collection(f"{character}")
+
 	if len(history['You']) > params['chunk_count'] and user_input != '':
 
 		query = user_input

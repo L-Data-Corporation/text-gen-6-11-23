@@ -14,8 +14,8 @@ def handler(job):
 
     if params['build_collection']:
         collection = build_collection(history, params['character'])
-        generate_reply_HF(history, tokenizer, model, collection, params, stopping_strings=['You:'])
-        return collection
+        reply = generate_reply_HF(params['fan_update'], history, tokenizer, model, collection, params, stopping_strings=['You:'])
+        return reply
     else:
         embeddings
         reply = generate_reply_HF(history, tokenizer, model, embeddings, params, stopping_strings=['You:'])
