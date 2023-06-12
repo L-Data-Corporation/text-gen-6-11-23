@@ -26,6 +26,8 @@ def build_collection(history, character):
 	collection_creation_time = time.time()
 	print("--- %s seconds ---" % (collection_creation_time - start_time))
 
+	chroma_client.persist()
+
 	return collection
 
 
