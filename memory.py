@@ -10,7 +10,7 @@ def build_collection(history, character):
 	
 	start_time = time.time()
 
-	chroma_client = chromadb.Client(Settings(anonymized_telemetry=False, persist_directory=f"embeddings/{character}"))
+	chroma_client = chromadb.Client(Settings(anonymized_telemetry=False, chroma_db_impl="duckdb+parquet", persist_directory=f"embeddings/{character}"))
 
 	sentence_transformer_ef = embedding_functions.SentenceTransformerEmbeddingFunction(model_name="all-mpnet-base-v2")
 	collection = chroma_client.create_collection(name="context", embedding_function=sentence_transformer_ef)
